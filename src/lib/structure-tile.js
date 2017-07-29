@@ -1,6 +1,6 @@
 // structureTile :: (Object, Object) -> Object
-const structureTile = (structure, texture) => {
-  return Object.assign({}, structure, {texture});
+const structureTile = ({name, texture, position}) => {
+  return Object.assign({}, {name, texture, position});
 };
 
 export default structureTile;
