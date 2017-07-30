@@ -19,6 +19,7 @@ function  validateCase (options) {
   validateTerrainSize(errors, options);
   validateStructuresPlacement(errors, options);
   validateStructuresOverlap(errors, options);
+  validateSystemComponents(errors, options);
   if (errors.length) throw `Validation Error: ${options.name} contains errors:\n ${errors.join('\n')}`;
 }
 
@@ -53,6 +54,13 @@ function validateStructuresOverlap (errors, {structureTiles}) {
     checkOverlap(array[0], array.slice(1));
   }
   if (overlap.length) overlap.forEach(err => errors.push(`${err[0]} and ${err[1]} overlap on position ${err[2]}`));
+}
+
+function validateSystemComponents (errors, {system, structureTiles}) {
+  let missingTiles = system.components.filter(c => {
+    return structureTiles.map(t => t.data.name).indexOf(c.name) == -1;
+  });
+  if (missingTiles.length) missingTiles.forEach(c => errors.push(`${c.name} component does not have a tile`));
 }
 
 // flatmapToTilesArray :: Array -> Array
