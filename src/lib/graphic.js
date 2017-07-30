@@ -1,12 +1,10 @@
 export default function graphic ({width, height, gridSize, ratio = 1.732, minPadding = 1}) {
-  let tw = width / (gridSize.x + 1 + minPadding * 2);
-  let th = height / (gridSize.y + 1 + minPadding * 2);
+  let th = Math.min(
+    width / (gridSize.x + 1 + minPadding * 2) / ratio,
+    height / (gridSize.y + 1 + minPadding * 2)
+  );
 
-  if (th < (tw / ratio)) {
-    tw = th * ratio;
-  } else {
-    th = tw / ratio;
-  }
+  let tw = th * ratio;
 
   let padding = [
     (width - tw * (gridSize.x + 1)) / 2,
