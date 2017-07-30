@@ -1,6 +1,6 @@
 /* global beforeEach, jest, it, describe, expect */
 import {case2d, flatmapToTilesArray} from '../lib/case-2d.js';
-const vector = jest.fn((x, y) => {return {x, y};});
+import vector from '../lib/vector.js';
 
 describe('case2d', () => {
   let options = {};
@@ -12,17 +12,11 @@ describe('case2d', () => {
     ]);
     let system = [];
     let structureTiles = [];
-    options = {gridSize, terrainTiles, system, structureTiles};
+    options = {name, gridSize, terrainTiles, system, structureTiles};
   });
 
-  it('returns case data for rendering in 2d', () => {
-    let project = case2d(options);
-    expect(project).toEqual({
-      gridSize: vector(1, 1),
-      terrainTiles: options.terrainTiles,
-      system: options.system,
-      structureTiles: options.structureTiles
-    });
+  it('given correct data, returns case data for rendering in 2d', () => {
+    expect(() => case2d(options)).not.toThrow();
   });
 
   describe('throws an error when', () => {
@@ -38,10 +32,15 @@ describe('case2d', () => {
     });
 
     it('structureTile is placed on a tile without terrain', () => {
+      options.gridSize = vector(1, 0);
       options.terrainTiles = flatmapToTilesArray([[{}, null]]);
-      options.structureTiles = [{texture: {size: vector(0,1)}, position: vector(0, 0)}];
+      options.structureTiles = [
+        {data: {name: 'house'}, texture: {size: vector(2,0)}, position: vector(0, 0)}
+      ];
 
-      expect(() => case2d(options)).toThrow(/has no terrain/);
+      let missingTiles = [vector(1,0), vector(2,0)].forEach(el =>
+        expect(() => case2d(options)).toThrow(new RegExp(el))
+      );
     });
   });
 });

@@ -3,7 +3,7 @@ import vector from '../lib/vector.js';
 
 export const factory = texture({
   filename: 'factory.png',
-  size: vector(2, 1)
+  size: vector(1, 0)
 });
 
 export const house = texture({
@@ -12,5 +12,5 @@ export const house = texture({
 
 export const solar = texture({
   filename: 'solar.png',
-  size: vector(2, 2)
+  size: vector(1, 1)
 });

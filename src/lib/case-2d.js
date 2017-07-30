@@ -17,7 +17,8 @@ export const case2d = (options) => {
 function  validateCase (options) {
   let errors = [];
   validateTerrainSize(errors, options);
-  if (errors.length) throw `Validation Error: ${options.name} contains errors: ${errors.join('\n')}`;
+  validateStructuresPlacement(errors, options);
+  if (errors.length) throw `Validation Error: ${options.name} contains errors:\n ${errors.join('\n')}`;
 }
 
 // validateTerrainMapSize :: (Object, Array) -> undefined
@@ -29,9 +30,10 @@ function validateTerrainSize (errors, {terrainTiles, gridSize}) {
 
 function validateStructuresPlacement (errors, {terrainTiles, structureTiles}) {
   structureTiles.forEach(st => {
-    if(!terrainTiles.find(tt => st.position.equals(tt.position))) {
-      errors.push(`structureTile at position ${st.position} has no terrain tile`);
-    }
+    let missingTiles = st.position.surfacePoints(st.texture.size).filter(v =>
+      !terrainTiles.find(tt => tt.position.equals(v))
+    );
+    if (missingTiles.length) errors.push(`${st.data.name} has no terrain tile at positions: ${missingTiles.join(', ')}`);
   });
 }
 
