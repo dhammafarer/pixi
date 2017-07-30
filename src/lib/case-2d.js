@@ -18,6 +18,7 @@ function  validateCase (options) {
   let errors = [];
   validateTerrainSize(errors, options);
   validateStructuresPlacement(errors, options);
+  validateStructuresOverlap(errors, options);
   if (errors.length) throw `Validation Error: ${options.name} contains errors:\n ${errors.join('\n')}`;
 }
 
@@ -37,10 +38,21 @@ function validateStructuresPlacement (errors, {terrainTiles, structureTiles}) {
   });
 }
 
-function validateStructuresOverlap (errors, {terrainTiles, gridSize}) {
-  if (terrainTiles.some(tile => tile.position.greaterThan(gridSize))) {
-    errors.push('terrain map is larger than grid');
+function validateStructuresOverlap (errors, {structureTiles}) {
+  let overlap = [];
+  checkOverlap(structureTiles[0], structureTiles.slice(1));
+
+  function checkOverlap(tile, array) {
+    if (!array.length) return;
+    tile.position.surfacePoints(tile.texture.size)
+      .forEach(p => array.forEach(t2 => {
+        t2.position.surfacePoints(t2.texture.size).forEach(p2 => {
+          if (p2.equals(p)) overlap.push([tile.data.name, t2.data.name, p]);
+        });
+      }));
+    checkOverlap(array[0], array.slice(1));
   }
+  if (overlap.length) overlap.forEach(err => errors.push(`${err[0]} and ${err[1]} overlap on position ${err[2]}`));
 }
 
 // flatmapToTilesArray :: Array -> Array

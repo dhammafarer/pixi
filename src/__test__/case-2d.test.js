@@ -6,9 +6,10 @@ describe('case2d', () => {
   let options = {};
   beforeEach(() => {
     let name = 'grid project';
-    let gridSize = vector(1, 1);
+    let gridSize = vector(2, 2);
     let terrainTiles = flatmapToTilesArray([
-      [{}]
+      [{}, {}],
+      [{}, {}]
     ]);
     let system = [];
     let structureTiles = [];
@@ -41,6 +42,18 @@ describe('case2d', () => {
       let missingTiles = [vector(1,0), vector(2,0)].forEach(el =>
         expect(() => case2d(options)).toThrow(new RegExp(el))
       );
+    });
+
+    it('structureTiles overlap each other', () => {
+      options.structureTiles = [
+        {data: {name: 'factory'}, texture: {size: vector(1,0)}, position: vector(0, 0)},
+        {data: {name: 'house'}, texture: {size: vector(0,0)}, position: vector(1, 0)}
+      ];
+
+      expect(() => case2d(options)).toThrow(/factory/);
+      expect(() => case2d(options)).toThrow(/house/);
+      expect(() => case2d(options)).toThrow(/(1,0)/);
+      expect(() => case2d(options)).not.toThrow(/(0,0)/);
     });
   });
 });
