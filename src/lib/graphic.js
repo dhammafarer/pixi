@@ -12,12 +12,14 @@ export default function graphic ({width, height, gridSize, ratio = 1.732, minPad
   ];
 
   return {
+    gridSize,
     width,
     height,
     padding,
+    ratio,
     tile: {
       width: tw,
-      height: th
+      height: th,
     }
   };
 }
