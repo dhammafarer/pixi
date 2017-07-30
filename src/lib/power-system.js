@@ -1,6 +1,7 @@
 // powerSystem :: Array -> Object
-const powerSystem  = (components) => {
+const powerSystem  = ({name, components}) => {
   return {
+    name,
     components: Array.from(components)
   };
 };

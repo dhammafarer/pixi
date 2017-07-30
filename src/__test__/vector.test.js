@@ -9,4 +9,13 @@ describe('vector', () => {
       expect(v.y).toEqual(2);
     });
   });
+
+  describe('can compare vectors', () => {
+    it('with a greaterThan method', () => {
+      let v = vector(2,2);
+      let v2 = vector(1,1);
+
+      expect(v.greaterThan(v2)).toBe(true);
+    });
+  });
 });
