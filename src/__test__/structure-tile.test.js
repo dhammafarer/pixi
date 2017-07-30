@@ -3,14 +3,14 @@ import structureTile from '../lib/structure-tile.js';
 const vector = jest.fn().mockReturnValue({});
 
 describe('structure-tile', () => {
-  describe('given structure and texture as required arguments', () => {
-    it('returns an object with name, data, texture filename and size', () => {
+  describe('given structure, texture and position as required arguments', () => {
+    it('returns an object with structure, texture and position', () => {
       let texture = {filename: 'house.png', size: vector(1, 2)};
-      let name = 'house';
+      let structure = {name: 'house'};
       let position = vector(0, 0);
-      let result = structureTile({name, position, texture});
+      let result = structureTile({structure, position, texture});
 
-      expect(result.name).toEqual(name);
+      expect(result.structure.name).toEqual(structure.name);
       expect(result.position).toEqual(position);
       expect(result.texture.filename).toEqual(texture.filename);
       expect(result.texture.size).toEqual(texture.size);
