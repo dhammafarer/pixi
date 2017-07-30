@@ -21,12 +21,20 @@ describe('isometricGrid', () => {
   });
 
   describe('given a graphic object, it returns an object with', () => {
-    it('an tileCoords method', () => {
+    it('a tileCoords method', () => {
       let result = isometricGrid(graphic);
       expect(result.tileCoords(vector(0, 0))).toEqual({x: 30, y: 10});
       expect(result.tileCoords(vector(0, 1))).toEqual({x: 40, y: 15});
       expect(result.tileCoords(vector(1, 0))).toEqual({x: 20, y: 15});
       expect(result.tileCoords(vector(1, 1))).toEqual({x: 30, y: 20});
+    });
+
+    it('pointCoords method', () => {
+      let result = isometricGrid(graphic);
+      expect(result.pointCoords(vector(0, 0))).toEqual({x: 40, y: 10});
+      expect(result.pointCoords(vector(0, 1))).toEqual({x: 50, y: 15});
+      expect(result.pointCoords(vector(1, 0))).toEqual({x: 30, y: 15});
+      expect(result.pointCoords(vector(1, 1))).toEqual({x: 40, y: 20});
     });
   });
 });
