@@ -25,14 +25,31 @@ describe('case2d', () => {
     });
   });
 
-  it('throws an error when terrainMap does not fit gridSize', () => {
-    options.gridSize = vector(2, 2);
-    options.terrainTiles = flatmapToTilesArray([
-      [{}, {}, {}],
-      [{}, {}, {}],
-      [{}, {}, {}],
-      [{}, {}, {}]
-    ]);
-    expect(() => case2d(options)).toThrow(/Validation Error/);
+  describe('throws an error when', () => {
+    it('terrainMap does not fit gridSize', () => {
+      options.gridSize = vector(2, 2);
+      options.terrainTiles = flatmapToTilesArray([
+        [{}, {}, {}],
+        [{}, {}, {}],
+        [{}, {}, {}],
+        [{}, {}, {}]
+      ]);
+      expect(() => case2d(options)).toThrow(/larger than grid/);
+    });
+  });
+});
+
+describe('flatmapToTilesArray', () => {
+  it('flattens an array of tiles', () => {
+    let tilesMap = [[{}, {}], [{}]];
+    let result = flatmapToTilesArray(tilesMap);
+    expect(result.length).toBe(3);
+  });
+
+  it('filters out tiles without a texture', () => {
+    let tilesMap = [[{}, null]];
+    let result = flatmapToTilesArray(tilesMap);
+
+    expect(result.length).toBe(1);
   });
 });
