@@ -36,6 +36,13 @@ describe('case2d', () => {
       ]);
       expect(() => case2d(options)).toThrow(/larger than grid/);
     });
+
+    it('structureTile is placed on a tile without terrain', () => {
+      options.terrainTiles = flatmapToTilesArray([[{}, null]]);
+      options.structureTiles = [{texture: {size: vector(0,1)}, position: vector(0, 0)}];
+
+      expect(() => case2d(options)).toThrow(/has no terrain/);
+    });
   });
 });
 
